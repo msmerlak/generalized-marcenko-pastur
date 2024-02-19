@@ -19,43 +19,109 @@
 
 \begin{document}
 
-\title{Marcenko-Pastur and tail dependencies}
+\title{On the spectrum of empirical correlation matrices in the presence of tail dependence}
 
 \author{Matteo Smerlak}
-\affiliation{Laboratoire Biophysique et Evolution, ESPCI ParisTech, 10 rue Vauquelin, 75005 Paris, France}
 \affiliation{Capital Fund Management, 23 Rue de l'Université, 75007 Paris, France}
 
 
 \author{Jean-Philippe Bouchaud}
 \affiliation{Capital Fund Management, 23 Rue de l'Université, 75007 Paris, France}
-\affiliation{Académie des Sciences}
+\affiliation{Académie des Sciences...}
+\affiliation{Chaire d'Econophysix, Ecole polytechnique...}
 
 \date{\today}
-
 \begin{abstract}
+    Motivated by financial applications, we consider the spectrum of Spearman correlation matrices for large random vectors whose components are uncorrelated but not independent. 
+
     
 \end{abstract}
 \maketitle
 
-%Introduction
 \paragraph*{Introduction.}
+A basic problem in multivariate statistics is to determine whether empirical data is compatible with the null hypothesis of no correlation. 
+When the number of data points $T$ is large but not much larger than the number of variables $N$, this problem is less straightforward than it may sound: small statistical errors in the estimation of individual correlation coefficients can compound to create macroscopic errors, e.g. when infering principal components.
+In the context of financial risk management, the principal components of the matrix of assets returns can be interpreted as statistical risk factors; they play a key role in any rational portfolio construction. 
+
+A now standard approach to test the hypothesis that the components of an $N$-dimensional random vector $x$ present dependencies relies on the the Marcenko-Pastur (MP) theorem from random matrix theory. 
+Under general conditions on the distribution of individual entries, the MP theorem states the spectrum of the covariance matrix $C = \sum_{t=1}^T x_t' x_t/T$ (where prime denotes transpose) for $T$ i.i.d. observations $x_t$ converges in the large $N, T$ limit to a universal distribution which only depends on the ratio $q = \lim N/T$.
+The MP spectrum is supported between $\lambda_- = (1-\sqrt{q})^2$ and $\lambda_+ = (1+\sqrt{q})^2$ (with a Dirac mass at $0$ if $q>1$), and so any eigenvalue of $C$ within this range can be interpreted as sampling noise compatible with the hypothesis of independence. 
+
+Although this theorem has been successfully applied in finance to detect (or reject) correlations between assets returns, the independence assumption which underlies the MP law is not fully compelling from an economic perspective. 
+The reason is the phenomenon of \emph{systematic volatility}, whereby large moves (in either direction) tend to occur at the same time across entire markets. 
+This effect can be modelled by assuming that the vector of asset returns on a given day $t$ take the form $x_t = \sigma_t\xi_t$, where $\sigma_t > 0$ is a common, time-dependent scale (the market's volatility on a given day $t$), and $\xi_t$ captures the directional component of the returns. 
+If two assets are perfectly uncorrelated, then we can assume the corresponding components of $\xi$ to be independent; nevertheless, the components of $x$ are not independent, because they are scaled by the same $\sigma_t$.
+Our purpose in this paper is to examine the fate of the MP law in the presence of such non-linear dependence.  
+
+In particular, empirical studies show that volatility fluctuations the distribution of $\sigma$ is often heavy-tailed, with a power-law tail of the form $P(\sigma) \sim \sigma^{-1-\alpha}$ for $\sigma\to\infty$.
+Under the model $x_t = \sigma_t\xi_t$, the distribution of returns is then also heavy-tailed; for instance; $X$ has a multivariate Student distribution if $\xi$ is Gaussian and $\sigma_t$ has an inverse Gamma distribution. 
+This stylized fact creates an additional challenge for the detection of significant dependencies: the standard covariance (and correlation) matrices are not well-defined when the variables have infinite variance; even when they do, rare, large events tend the dominate the average $\sum_t x_t' x_t/T$, making $X'X/T$ a poor estimator of the true covariance matrix.
+For this reason, we focus here on \emph{Spearman correlation matrices}; see e.g. XXX for a discussion on the value of using copula-based measures of dependence instead of Pearson, moment-based estimators.   
 
 
+In Ref. [Biroli et al], the spectrum of empirical Pearson covariance matrices for multivariate Student variables $X\sim t_\nu$ was approached using similar tools. 
+However, because $\sigma$ has a long-tailed distribution, the resulting eigenvalue spectrum was found to have unbounded support. 
 
-\paragraph*{Spearman correlation spectra}
+\paragraph*{Copulas and Spearman correlation matrices.}
+Consider an $N$-dimensional random vector $X$ with multivariate distribution function $F(x) = \mathbb{P}(X_1 \leq x_1, \cdots, X_N \leq x_N)$, and denote the corresponding marginal distributions as $F_n$, which in the following we assume are independent of $n$ (i.e. $X$ is exchangeable). 
+The \emph{copula} of $X$ is conventionally defined as the random vector $U$ with components $U_n = F(X_n)$, such that each component $U_n$ is uniformly distributed in $[0, 1]$. 
+Here we find it more convenient to consider instead $V \equiv \sqrt{3}(2U - 1)$, such that each $V_n$ has zero mean and unit variance. 
+Either way, the copula of $X$ captures the intrinsic dependencies between the components of $X$, indendently of scale transformations of its marginals; by Sklar's theorem, the distribution of $X$ is completely specified by that of $U$ (or $V$) and by the marginals $F_n$. 
 
-\paragraph*{Student variables}
+The simplest dependence measure based on the copula of $X$ is the \emph{Spearman correlation matrix}, defined as the covariance of $V$, viz. $C_{nm} = \mathbb{E}(V_nV_m)$.
+Given $T$ samples of $X$, the Spearman matrix $C$ can be estimated as the sample covariance matrix of the centered, scaled ranks. 
 
-\paragraph*{A solvable model displaying super-universality}
+\paragraph*{The MP law and free addition.}
+If $X$ and therefore $V$ have i.i.d. components, the spectrum of the empirical covariance matrix $C = V^TV/T$ converges in the $N, T\to\infty$ limit to a universal distribution parametrized by $q = \lim N/T$, with density $\rho_q(\lambda) = XXX$. 
+This result is a consequence of a ``concentration of the norm'' phenomenon: writing $s = \Vert V\Vert^2/N  = \sum_i V_i^2/N$, the law of large numbers implies that $s\to1$ as $N\to\infty$, i.e. the vector $V/\sqrt{N}$ concentrates on the unit sphere in $N$-dimensional space. 
 
+A natural language to relate this concentration of norm phenomenon to the spectrum of $C$ is the notion of free addition of large random matrices.
+Let us recall some basic definitions.
+If $M$ is an $N\times N$ real symmetrix matrix, its Stieltjes transform is the normalized trace of its resolvent, i.e. the complex function $g(z) = \textrm{Tr}\,(z I - M)^{-1} / N$ for $z$ not in the spectrum of $M$.
+The knowledge of $g(z)$ is equivalent to that of its spectral density $\rho(\lambda) = \sum_k\delta(\lambda - \lambda_k)/N$ (where $\lambda_k$ are the $N$ eigenvalues of $M$ with multiplicity).
+Indeed we have $g(z) = \int_\mathbb{R} (z-\lambda)^{-1}\rho(\lambda)d\lambda$; vice versa, we have the Stieltjes inversion formula $\lim_{\eta\to 0^+}\textrm{Im}\, g(\lambda - i\eta) = \pi \rho(\lambda)$.
 
+Free probability theory suggests a reformulation of these relationships which is useful when $M$ arises as a sum of matrices $M_t$. 
+If $z(g)$ denotes the inverse function of $g(z)$, call $R(g) \equiv z(g) - 1/g$ the $R$ transform of $M$. (Clearly the knowledge of $g(z)$ is equivalent to the knowledge of $R(g)$.)
+Then, if $M = \sum_{t = 1}^T M_t$ and the eigenbases of $M_t$ are randomly rotated with respect to one another, it can be showed that the $R(g)$ converges to $\sum_{t = 1}^T R_t$ in the large $N$ limit. 
+One can view this result as the matrix equivalent of the statement that the cumulant generating function of a random variable is additive with respect to independent summands; just like the latter statement makes the central limit theorem trivial, the additivity of the $R$-transform with respect to free addition trivializes statements like the the Wigner and Marcenko-Pastur theorems. 
 
-
+With this result, it is to see how the MP law arises from the concencentration of the norm. 
+Given $T$ samples $v^t$ of the copula vector $V$, the empirical Spearman correlation matrix matrix $C$ decomposes as $C = \sum_t P_t$ where $P_t$ is the rank-$1$ projectors $(v^t)^T v^t / T$. 
+By concentration of the norm, $P_t$ has eigenvalues $0$ (with multiplicity $N-1$) and $\Vert v^t\Vert ^2 / T \sim N/T = q$ (with multiplicity $1$), hence its Stieltjes transform is $g_t(z) = [(N-1)z^{-1} + (z - q)^{-1}]/N$. 
+Inverting this equation to first order in $N$, we obtain the $R$-transform of $P_t$
 \begin{equation}
-    fqdsffqsd
+    R_t(g) = \frac{1}{N}\, \frac{q}{1-qg}.
 \end{equation}
-\section{Introduction}
+By freeness, we obtain $R$-transform of $C$ additively, as $R(g) = T R_t(g)$, i.e.
+\begin{equation}
+    R(g) = \frac{1}{1-qg}.
+\end{equation}
+This expression defines a unique spectral density parametrized by $q$: the Marcenko-Pastur law. 
 
+\paragraph*{Spearman correlation spectra.}
+When $X$ has a non-trivial copula (i.e. the components of $V$ are not independent), it is no longer true that $s_t \equiv \Vert v_t\Vert ^2 / N$ converges to $1$ in the large $N$ limit.
+Instead, $s_t$ defines a random variable ranging between $0$ and its maximum value $s_\textrm{max} = 3$, whose law derives from that of $\sigma_t$ via its defining equation
+\begin{equation}
+    s_t = \frac{\Vert V\Vert^2}{N} = \mathbb{E}_\xi [3(2F(\sigma_t \xi) - 1)^2].
+\end{equation}
+
+Using freeness as above, the $R$-transform of the Spearman correlation matrix is given by the sum over rank-$1$ projectors with different eigenvalues, and we obtain 
+\begin{eqnarray}
+    R(g) = \sum_t \frac{1}{N}\,\frac{qs}{1-qsg} &=& \frac{1}{T}\sum_t\, \frac{s}{1-sqg}\\ &=&\mathbb{E}_s\left[\frac{s}{1-sqg}\right].
+\end{eqnarray}
+
+\paragraph*{A solvable model.}
+Consider the case where $\xi$ takes values $\pm1$ with equal probability. 
+In this case, it is easy to check that $s/3$ has a beta distribution with parameters $1/2, 1/2$, i.e. $P(s) = 1/\pi\sqrt{s(1-s)}$ irrespective of the distribution of $\sigma$.
+
+\paragraph*{Beta copulas.}
+More generally, we can call "beta copula" the copula of a random vector $X$ such that $s/3$ approaches a beta distribution with parameters $(\alpha, 2\alpha)$ for some $\alpha> 0$ when $N\to\infty$.
+
+
+\paragraph*{Empirical data?}
+
+\medskip
 
 \medskip
 The Julia code used for simulations is available at \url{www.github.com/msmerlak/generalized-marcenko-pastur}.
@@ -63,12 +129,12 @@ The Julia code used for simulations is available at \url{www.github.com/msmerlak
 \medskip
 
 \begin{acknowledgments}
-We thank Jules Desperin for useful discussions. 
+We thank Jules Desperin and Iacopo Mastromatteo for useful discussions. 
 \end{acknowledgments}
 
 \medskip
 
-\bibliography{}
-\bibliographystyle{unsrt}
+% \bibliography{}
+% \bibliographystyle{unsrt}
 
 \end{document} 
